@@ -7,9 +7,9 @@ class Barholder extends React.Component {
     super();
 
     this.state = {
-      minimum: 5,
-      maximum: 250,
-      amount: 10,
+      minimum: 50,
+      maximum: 650,
+      amount: 25,
       randomArray: []
     };
 
@@ -30,20 +30,56 @@ class Barholder extends React.Component {
     });
   };
 
-  componentDidMount() {
-    console.log(this.state.randomArray);
-    setTimeout(this.sortIt(), 1000);
-    console.log(this.state.randomArray);
-  }
+  bubbleSort = () => {
+    let array = this.state.randomArray.slice();
+    let animations = [];
+    const length = array.length;
+
+    for (let i = 0; i < length - 1; i++) {
+      for (let j = 0; j < length - i - 1; j++) {
+        if (array[j] > array[j + 1]) {
+          this.swap(array, j, j + 1);
+          animations.push(array.slice());
+        }
+      }
+    }
+
+    console.log(animations);
+
+    const loopAnimations = (arr, i) => {
+      const ttime = 50;
+      if (i < arr.length) {
+        const animationArray = arr[i];
+        this.setState({ randomArray: animationArray });
+        i++;
+        setTimeout(loopAnimations, ttime, arr, i);
+      }
+    };
+
+    loopAnimations(animations, 0);
+  };
+
+  swap = (array, i, j) => {
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  };
+
+  componentDidMount() {}
 
   createBars = randArray => {
     return (
       <div className="barholder-wrapper">
         {randArray.map((bar, index) => (
-          <div key={index} className="array-element">
+          <div
+            style={{ height: `${bar}px` }}
+            key={index}
+            className="array-element"
+          >
             {bar}
           </div>
         ))}
+        <button onClick={this.bubbleSort}></button>
       </div>
     );
   };
