@@ -8,7 +8,7 @@ export function randomArrayWithRange(min, max, amount) {
     const randomFloat = Math.random() * (max - min + 1) + min;
     const randomInt = Math.floor(randomFloat);
 
-    randomArray.push(randomInt);
+    randomArray.push({ value: randomInt, style: "#2196f3" });
   }
 
   return randomArray;

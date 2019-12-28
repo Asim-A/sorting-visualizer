@@ -20,16 +20,6 @@ class Barholder extends React.Component {
     );
   }
 
-  sortIt = () => {
-    let randomArray = this.state.randomArray.sort((a, b) => {
-      return a - b;
-    });
-
-    this.setState({
-      randomArray
-    });
-  };
-
   bubbleSort = () => {
     let array = this.state.randomArray.slice();
     let animations = [];
@@ -37,9 +27,14 @@ class Barholder extends React.Component {
 
     for (let i = 0; i < length - 1; i++) {
       for (let j = 0; j < length - i - 1; j++) {
-        if (array[j] > array[j + 1]) {
+        const itemLeft = array[j].value;
+        const itemRight = array[j + 1].value;
+
+        if (itemLeft > itemRight) {
           this.swap(array, j, j + 1);
-          animations.push(array.slice());
+          const newArray = JSON.parse(JSON.stringify(array));
+          newArray[j + 1].style = "red";
+          animations.push(newArray);
         }
       }
     }
@@ -72,11 +67,15 @@ class Barholder extends React.Component {
       <div className="barholder-wrapper">
         {randArray.map((bar, index) => (
           <div
-            style={{ height: `${bar}px` }}
+            style={{
+              height: `${bar.value}px`,
+              backgroundColor: `${bar.style}`,
+              color: "white"
+            }}
             key={index}
             className="array-element"
           >
-            {bar}
+            {bar.value}
           </div>
         ))}
         <button onClick={this.bubbleSort}></button>
